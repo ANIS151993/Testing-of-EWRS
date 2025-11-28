@@ -1,0 +1,30 @@
+{
+    "java.configuration.updateBuildConfiguration": "automatic",
+    "java.import.gradle.enabled": true,
+    "java.import.gradle.wrapper.enabled": true,
+    "java.test.config": {
+        "vmArgs": [
+            "-DTEST_MODE=true",
+            "-Djava.awt.headless=true"
+        ]
+    },
+    "java.project.sourcePaths": [],
+    "java.project.outputPath": "bin",
+    "java.configuration.runtimes": [
+        {
+            "name": "JavaSE-23",
+            "path": "C:\\Program Files\\Java\\jdk-23",
+            "default": true
+        }
+    ],
+    "java.jdt.ls.vmargs": "-Xmx512m -Xms256m",
+    "files.exclude": {
+        "**/.git": true,
+        "**/.gradle": true,
+        "**/build": false,
+        "**/.classpath": true,
+        "**/.project": true,
+        "**/.settings": true
+    },
+    "git.ignoreLimitWarning": true
+}

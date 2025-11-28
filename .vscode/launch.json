@@ -1,0 +1,22 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Main",
+            "request": "launch",
+            "mainClass": "com.cbozan.main.Main",
+            "projectName": "src"
+        },
+        {
+            "type": "java",
+            "name": "Launch Main",
+            "request": "launch",
+            "mainClass": "com.cbozan.main.Main",
+            "projectName": "employer-worker-registration-system",
+            "preLaunchTask": "buildGradle",
+            "vmArgs": "-Xmx512m -Xms256m",
+            "console": "integratedTerminal"
+        }
+    ]
+}

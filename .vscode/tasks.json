@@ -1,0 +1,44 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "buildGradle",
+            "type": "shell",
+            "command": "${workspaceFolder}/gradle-run.bat",
+            "args": ["build"],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "silent",
+                "panel": "shared"
+            }
+        },
+        {
+            "label": "cleanBuild",
+            "type": "shell",
+            "command": "${workspaceFolder}/gradle-run.bat",
+            "args": ["clean", "build"],
+            "group": "build",
+            "problemMatcher": []
+        },
+        {
+            "label": "runApp",
+            "type": "shell",
+            "command": "${workspaceFolder}/gradle-run.bat",
+            "args": ["run"],
+            "group": "none",
+            "problemMatcher": []
+        },
+        {
+            "label": "test",
+            "type": "shell",
+            "command": "${workspaceFolder}/gradle-run.bat",
+            "args": ["test"],
+            "group": "test",
+            "problemMatcher": []
+        }
+    ]
+}

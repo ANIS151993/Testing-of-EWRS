@@ -1,0 +1,78 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group = 'com.cbozan'
+version = '1.0.0'
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(23)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.postgresql:postgresql:42.7.4'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.0'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.0'
+    testImplementation 'org.testcontainers:testcontainers:1.20.1'
+    testImplementation 'org.testcontainers:postgresql:1.20.1'
+}
+
+application {
+    // Desktop/Swing entry point
+    mainClass = 'com.cbozan.main.Main'
+    // Reduce memory for systems with limited RAM
+    applicationDefaultJvmArgs = ['-Xmx512m', '-Xms256m']
+}
+
+sourceSets {
+    main {
+        java {
+            // Use existing Eclipse layout
+            srcDirs = ['src']
+            exclude '**/test/**'
+        }
+        resources {
+            // If you keep .properties/.xml/etc alongside sources, include them as resources
+            srcDirs = ['src']
+            include '**/*.properties', '**/*.xml'
+            exclude '**/*.java', '**/*.class', '**/test/**'
+        }
+    }
+    test {
+        java {
+            srcDirs = ['src/test/java']
+        }
+        resources {
+            srcDirs = ['src/test/resources']
+        }
+    }
+}
+
+test {
+    useJUnitPlatform()
+    systemProperty 'TEST_MODE', 'true'
+    systemProperty 'java.awt.headless', 'true'
+    testLogging {
+        events 'passed', 'skipped', 'failed'
+        exceptionFormat 'full'
+    }
+}
+
+// Consistent encoding
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
+}
+
+// Make the fat jar runnable by double-click/`java -jar`
+tasks.jar {
+    manifest {
+        attributes('Main-Class': application.mainClass.get())
+    }
+}

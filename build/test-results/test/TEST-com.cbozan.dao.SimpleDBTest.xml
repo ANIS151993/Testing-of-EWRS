@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="com.cbozan.dao.SimpleDBTest" tests="1" skipped="0" failures="0" errors="0" timestamp="2025-11-28T01:39:06" hostname="MARC" time="0.004">
+  <properties/>
+  <testcase name="canConnectToExistingDatabase()" classname="com.cbozan.dao.SimpleDBTest" time="0.004"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

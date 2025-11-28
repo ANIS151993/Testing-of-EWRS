@@ -3,7 +3,6 @@ package com.cbozan.entity;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Timestamp;
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,10 +121,10 @@ public class EntityTest {
             .build();
 
         Price price = new Price.PriceBuilder()
-            .setId(100)
-            .setFulltime(new BigDecimal("100.00"))
-            .setHalftime(new BigDecimal("50.00"))
-            .setOvertime(new BigDecimal("150.00"))
+            .setId(1)
+            .setFulltime(new java.math.BigDecimal("100.00"))
+            .setHalftime(new java.math.BigDecimal("50.00"))
+            .setOvertime(new java.math.BigDecimal("150.00"))
             .setDate(new Timestamp(System.currentTimeMillis()))
             .build();
 
@@ -159,10 +158,10 @@ public class EntityTest {
             .build();
 
         Price price = new Price.PriceBuilder()
-            .setId(101)
-            .setFulltime(new BigDecimal("120.00"))
-            .setHalftime(new BigDecimal("60.00"))
-            .setOvertime(new BigDecimal("180.00"))
+            .setId(2)
+            .setFulltime(new java.math.BigDecimal("200.00"))
+            .setHalftime(new java.math.BigDecimal("100.00"))
+            .setOvertime(new java.math.BigDecimal("300.00"))
             .setDate(new Timestamp(System.currentTimeMillis()))
             .build();
 

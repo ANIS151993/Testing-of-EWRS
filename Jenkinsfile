@@ -14,6 +14,8 @@ pipeline {
     DB_URL_DEFAULT  = 'jdbc:postgresql://localhost:5432/hesap'
     DB_USER_DEFAULT = 'Hesap-User'
     DB_PASS_DEFAULT = '.hesap123'
+    // Use Testcontainers for DB in CI by default
+    USE_EXTERNAL_DB = 'false'
   }
 
   stages {
@@ -60,28 +62,44 @@ pipeline {
             sh """
               ./gradlew --version
             """
-            sh """
-              ./gradlew clean test build --no-daemon --info \\
-                -DDB_URL=\${DB_URL} \\
-                -DDB_USER=\${DB_USER} \\
-                -DDB_PASSWORD=\${DB_PASSWORD} \\
-                -DTEST_MODE=true \\
-                -Djava.awt.headless=true
-            """
+            if (env.USE_EXTERNAL_DB == 'true') {
+              sh """
+                ./gradlew clean test build --no-daemon --info \\
+                  -DDB_URL=\${DB_URL} \\
+                  -DDB_USER=\${DB_USER} \\
+                  -DDB_PASSWORD=\${DB_PASSWORD} \\
+                  -DTEST_MODE=true \\
+                  -Djava.awt.headless=true
+              """
+            } else {
+              sh """
+                ./gradlew clean test build --no-daemon --info \\
+                  -DTEST_MODE=true \\
+                  -Djava.awt.headless=true
+              """
+            }
             sh 'ls -lah build/libs/ || echo "No libs directory"'
             sh 'ls -lah build/test-results/test/ || echo "No test results"'
             sh 'ls -lah build/reports/tests/test/ || echo "No test reports"'
           } else {
             bat 'java -version'
             bat 'gradlew.bat --version'
-            bat """
-              gradlew.bat clean test build --no-daemon --info ^
-                -DDB_URL=%DB_URL% ^
-                -DDB_USER=%DB_USER% ^
-                -DDB_PASSWORD=%DB_PASSWORD% ^
-                -DTEST_MODE=true ^
-                -Djava.awt.headless=true
-            """
+            if (env.USE_EXTERNAL_DB == 'true') {
+              bat """
+                gradlew.bat clean test build --no-daemon --info ^
+                  -DDB_URL=%DB_URL% ^
+                  -DDB_USER=%DB_USER% ^
+                  -DDB_PASSWORD=%DB_PASSWORD% ^
+                  -DTEST_MODE=true ^
+                  -Djava.awt.headless=true
+              """
+            } else {
+              bat """
+                gradlew.bat clean test build --no-daemon --info ^
+                  -DTEST_MODE=true ^
+                  -Djava.awt.headless=true
+              """
+            }
             bat 'dir build\\libs\\ || echo No libs directory'
             bat 'dir build\\test-results\\test\\ || echo No test results'
             bat 'dir build\\reports\\tests\\test\\ || echo No test reports'

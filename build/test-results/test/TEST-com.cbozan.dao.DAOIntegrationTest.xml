@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="com.cbozan.dao.DAOIntegrationTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2025-11-28T01:39:05" hostname="MARC" time="0.795">
+<testsuite name="com.cbozan.dao.DAOIntegrationTest" tests="7" skipped="0" failures="0" errors="0" timestamp="2025-11-28T03:31:05" hostname="MARC" time="0.646">
   <properties/>
-  <testcase name="dbConnectionShouldBeReusable()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.448"/>
-  <testcase name="adminTableShouldHaveAtLeastOneRecord()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.059"/>
-  <testcase name="workerDAOShouldList()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.146"/>
-  <testcase name="employerDAOShouldList()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.012"/>
-  <testcase name="allRequiredTablesShouldExist()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.033"/>
-  <testcase name="dbConnectionShouldWork()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.067"/>
+  <testcase name="dbConnectionShouldBeReusable()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.378"/>
+  <testcase name="adminTableShouldHaveAtLeastOneRecord()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.025"/>
+  <testcase name="workerDAOShouldList()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.095"/>
+  <testcase name="employerDAOShouldList()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.01"/>
+  <testcase name="allRequiredTablesShouldExist()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.029"/>
+  <testcase name="dbConnectionShouldWork()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.077"/>
   <testcase name="jobDAOShouldList()" classname="com.cbozan.dao.DAOIntegrationTest" time="0.02"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".

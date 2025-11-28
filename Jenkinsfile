@@ -1,4 +1,8 @@
 // Jenkinsfile v2025-11-28-1
+//
+// IMPORTANT: This project REQUIRES JDK 23 for build and test.
+// Make sure your Jenkins agent has JDK 23 installed and configured.
+// See README.md for details.
 pipeline {
   agent any
   options {

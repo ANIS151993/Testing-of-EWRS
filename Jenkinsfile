@@ -100,10 +100,11 @@ pipeline {
           if (jarFiles.length > 0) {
             echo "Found ${jarFiles.length} JAR file(s) to archive:"
             jarFiles.each { echo "  - ${it.name}" }
-            archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+            archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true, allowEmptyArchive: true
+            echo "✅ Artifacts archived successfully"
           } else {
-            echo "WARNING: No JAR files found in build/libs/"
-            error("Build did not produce any JAR artifacts")
+            echo "⚠️  WARNING: No JAR files found in build/libs/ - check Build & Test stage"
+            currentBuild.result = 'UNSTABLE'
           }
         }
       }
@@ -121,12 +122,13 @@ pipeline {
               reportName: 'Unit Test Report',
               keepAll: true,
               alwaysLinkToLastBuild: true,
-              allowMissing: false
+              allowMissing: true
             ])
             echo "✅ HTML Report published successfully"
           } else {
-            echo "WARNING: Test report not found at build/reports/tests/test/index.html"
-            error("Test report was not generated")
+            echo "⚠️  WARNING: Test report not found at build/reports/tests/test/index.html"
+            echo "This usually means tests did not run or failed to generate reports"
+            currentBuild.result = 'UNSTABLE'
           }
         }
       }

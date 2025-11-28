@@ -57,8 +57,14 @@ sourceSets {
 
 test {
     useJUnitPlatform()
-    systemProperty 'TEST_MODE', 'true'
-    systemProperty 'java.awt.headless', 'true'
+    
+    // Pass system properties from command line to tests
+    systemProperty 'TEST_MODE', System.getProperty('TEST_MODE', 'true')
+    systemProperty 'java.awt.headless', System.getProperty('java.awt.headless', 'true')
+    systemProperty 'DB_URL', System.getProperty('DB_URL', 'jdbc:postgresql://localhost:5432/Hesap-eProject')
+    systemProperty 'DB_USER', System.getProperty('DB_USER', 'Hesap-eProject')
+    systemProperty 'DB_PASSWORD', System.getProperty('DB_PASSWORD', '.hesap-eProject.')
+    
     testLogging {
         events 'passed', 'skipped', 'failed'
         exceptionFormat 'full'

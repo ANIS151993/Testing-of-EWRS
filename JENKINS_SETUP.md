@@ -25,15 +25,17 @@ The test suite includes:
 4. **Archive Artifacts**: Stores generated JAR files
 5. **Publish HTML Report**: Publishes test results as HTML
 
-## Required Jenkins Credentials
+## Jenkins Credentials (Optional)
 
-Configure these credentials in Jenkins (Manage Jenkins → Credentials):
+These credentials are **optional**. If not configured, the pipeline will use default values:
 
 | Credential ID | Type | Description | Default Fallback |
 |--------------|------|-------------|------------------|
 | `hesap-db-url` | Secret text | Database URL | `jdbc:postgresql://localhost:5432/hesap` |
 | `hesap-db-user` | Secret text | Database username | `Hesap-User` |
 | `hesap-db-password` | Secret text | Database password | `.hesap123` |
+
+**Note**: The pipeline will run successfully even without credentials. Configure them only if you need different database connection settings.
 
 ## Jenkins Setup Steps
 

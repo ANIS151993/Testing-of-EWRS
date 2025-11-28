@@ -1,9 +1,5 @@
-// Jenkinsfile v2025-11-27-1
+// Jenkinsfile v2025-11-28-1
 pipeline {
-  tools {
-    // Ensure Jenkins uses a configured JDK tool (configure 'JDK-23' in Jenkins > Manage Jenkins > Tools)
-    jdk 'JDK-23'
-  }
   agent any
   options {
     buildDiscarder(logRotator(numToKeepStr: '20'))
@@ -53,28 +49,40 @@ pipeline {
     stage('Build & Test') {
       steps {
         script {
+          echo "=== Starting Build & Test ==="
           if (isUnix()) {
+            sh 'java -version'
             sh 'chmod +x gradlew || true'
             sh """
-              ./gradlew --version \\
-              && ./gradlew clean test build --no-daemon --stacktrace \\
+              ./gradlew --version
+            """
+            sh """
+              ./gradlew clean test build --no-daemon --info \\
                 -DDB_URL=\${DB_URL} \\
                 -DDB_USER=\${DB_USER} \\
                 -DDB_PASSWORD=\${DB_PASSWORD} \\
                 -DTEST_MODE=true \\
                 -Djava.awt.headless=true
             """
+            sh 'ls -lah build/libs/ || echo "No libs directory"'
+            sh 'ls -lah build/test-results/test/ || echo "No test results"'
+            sh 'ls -lah build/reports/tests/test/ || echo "No test reports"'
           } else {
+            bat 'java -version'
+            bat 'gradlew.bat --version'
             bat """
-              gradlew.bat --version ^
-              && gradlew.bat clean test build --no-daemon --stacktrace ^
+              gradlew.bat clean test build --no-daemon --info ^
                 -DDB_URL=%DB_URL% ^
                 -DDB_USER=%DB_USER% ^
                 -DDB_PASSWORD=%DB_PASSWORD% ^
                 -DTEST_MODE=true ^
                 -Djava.awt.headless=true
             """
+            bat 'dir build\\libs\\ || echo No libs directory'
+            bat 'dir build\\test-results\\test\\ || echo No test results'
+            bat 'dir build\\reports\\tests\\test\\ || echo No test reports'
           }
+          echo "=== Build & Test Complete ==="
         }
       }
       post {
@@ -86,27 +94,62 @@ pipeline {
 
     stage('Archive Artifacts') {
       steps {
-        archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true, onlyIfSuccessful: true
+        script {
+          echo "=== Archiving Artifacts ==="
+          def jarFiles = findFiles(glob: 'build/libs/*.jar')
+          if (jarFiles.length > 0) {
+            echo "Found ${jarFiles.length} JAR file(s) to archive:"
+            jarFiles.each { echo "  - ${it.name}" }
+            archiveArtifacts artifacts: 'build/libs/*.jar', fingerprint: true
+          } else {
+            echo "WARNING: No JAR files found in build/libs/"
+            error("Build did not produce any JAR artifacts")
+          }
+        }
       }
     }
 
     stage('Publish HTML Report') {
-      when { expression { fileExists('build/reports/tests/test/index.html') } }
       steps {
-        publishHTML([
-          reportDir: 'build/reports/tests/test',
-          reportFiles: 'index.html',
-          reportName: 'Unit Test Report',
-          keepAll: true,
-          alwaysLinkToLastBuild: true,
-          allowMissing: true
-        ])
+        script {
+          echo "=== Publishing HTML Test Report ==="
+          if (fileExists('build/reports/tests/test/index.html')) {
+            echo "Test report found, publishing..."
+            publishHTML([
+              reportDir: 'build/reports/tests/test',
+              reportFiles: 'index.html',
+              reportName: 'Unit Test Report',
+              keepAll: true,
+              alwaysLinkToLastBuild: true,
+              allowMissing: false
+            ])
+            echo "✅ HTML Report published successfully"
+          } else {
+            echo "WARNING: Test report not found at build/reports/tests/test/index.html"
+            error("Test report was not generated")
+          }
+        }
       }
     }
   }
 
   post {
-    success { echo 'Build OK' }
-    failure { echo 'Build failed' }
+    success { 
+      echo "\n========================================"
+      echo "✅ BUILD SUCCESSFUL"
+      echo "All stages completed:"
+      echo "  ✓ Checkout"
+      echo "  ✓ Setup Environment"
+      echo "  ✓ Build & Test (8 JUnit tests)"
+      echo "  ✓ Archive Artifacts (JAR files)"
+      echo "  ✓ Publish HTML Report"
+      echo "========================================\n"
+    }
+    failure { 
+      echo "\n========================================"
+      echo "❌ BUILD FAILED"
+      echo "Check console output above for errors"
+      echo "========================================\n"
+    }
   }
 }

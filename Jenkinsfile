@@ -1,5 +1,9 @@
 // Jenkinsfile v2025-11-27-1
 pipeline {
+  tools {
+    // Ensure Jenkins uses a configured JDK tool (configure 'JDK-23' in Jenkins > Manage Jenkins > Tools)
+    jdk 'JDK-23'
+  }
   agent any
   options {
     buildDiscarder(logRotator(numToKeepStr: '20'))
@@ -52,7 +56,8 @@ pipeline {
           if (isUnix()) {
             sh 'chmod +x gradlew || true'
             sh """
-              ./gradlew clean test build --no-daemon \\
+              ./gradlew --version \\
+              && ./gradlew clean test build --no-daemon --stacktrace \\
                 -DDB_URL=\${DB_URL} \\
                 -DDB_USER=\${DB_USER} \\
                 -DDB_PASSWORD=\${DB_PASSWORD} \\
@@ -61,7 +66,8 @@ pipeline {
             """
           } else {
             bat """
-              gradlew.bat clean test build --no-daemon ^
+              gradlew.bat --version ^
+              && gradlew.bat clean test build --no-daemon --stacktrace ^
                 -DDB_URL=%DB_URL% ^
                 -DDB_USER=%DB_USER% ^
                 -DDB_PASSWORD=%DB_PASSWORD% ^

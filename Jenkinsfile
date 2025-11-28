@@ -17,18 +17,31 @@ pipeline {
       steps { checkout scm }
     }
 
-    stage('Load Credentials (optional)') {
+    stage('Setup Environment') {
       steps {
-        withCredentials([
-          string(credentialsId: 'hesap-db-url',      variable: 'DB_URL_CRED'),
-          string(credentialsId: 'hesap-db-user',     variable: 'DB_USER_CRED'),
-          string(credentialsId: 'hesap-db-password', variable: 'DB_PASS_CRED')
-        ]) {
-          script {
-            env.DB_URL      = (env.DB_URL_CRED  ?: env.DB_URL_DEFAULT)
-            env.DB_USER     = (env.DB_USER_CRED ?: env.DB_USER_DEFAULT)
-            env.DB_PASSWORD = (env.DB_PASS_CRED ?: env.DB_PASS_DEFAULT)
+        script {
+          // Try to load credentials if they exist, otherwise use defaults
+          try {
+            withCredentials([
+              string(credentialsId: 'hesap-db-url',      variable: 'DB_URL_CRED'),
+              string(credentialsId: 'hesap-db-user',     variable: 'DB_USER_CRED'),
+              string(credentialsId: 'hesap-db-password', variable: 'DB_PASS_CRED')
+            ]) {
+              env.DB_URL      = env.DB_URL_CRED
+              env.DB_USER     = env.DB_USER_CRED
+              env.DB_PASSWORD = env.DB_PASS_CRED
+              echo "Using Jenkins credentials for database connection"
+            }
+          } catch (Exception e) {
+            echo "Jenkins credentials not found, using default values"
+            env.DB_URL      = env.DB_URL_DEFAULT
+            env.DB_USER     = env.DB_USER_DEFAULT
+            env.DB_PASSWORD = env.DB_PASS_DEFAULT
           }
+          
+          // Display connection info (password masked)
+          echo "Database URL: ${env.DB_URL}"
+          echo "Database User: ${env.DB_USER}"
         }
       }
     }

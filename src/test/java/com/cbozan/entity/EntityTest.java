@@ -3,6 +3,7 @@ package com.cbozan.entity;
 import static org.junit.jupiter.api.Assertions.*;
 
 import java.sql.Timestamp;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -120,9 +121,18 @@ public class EntityTest {
             .setDate(new Timestamp(System.currentTimeMillis()))
             .build();
 
+        Price price = new Price.PriceBuilder()
+            .setId(100)
+            .setFulltime(new BigDecimal("100.00"))
+            .setHalftime(new BigDecimal("50.00"))
+            .setOvertime(new BigDecimal("150.00"))
+            .setDate(new Timestamp(System.currentTimeMillis()))
+            .build();
+
         Job job = new Job.JobBuilder()
             .setId(1)
             .setEmployer(employer)
+            .setPrice(price)
             .setTitle("Construction Project")
             .setDescription("Building project")
             .setDate(new Timestamp(System.currentTimeMillis()))
@@ -148,9 +158,18 @@ public class EntityTest {
             .setDate(new Timestamp(System.currentTimeMillis()))
             .build();
 
+        Price price = new Price.PriceBuilder()
+            .setId(101)
+            .setFulltime(new BigDecimal("120.00"))
+            .setHalftime(new BigDecimal("60.00"))
+            .setOvertime(new BigDecimal("180.00"))
+            .setDate(new Timestamp(System.currentTimeMillis()))
+            .build();
+
         Job original = new Job.JobBuilder()
             .setId(2)
             .setEmployer(employer)
+            .setPrice(price)
             .setTitle("Renovation")
             .setDescription("Renovation work")
             .setDate(new Timestamp(System.currentTimeMillis()))

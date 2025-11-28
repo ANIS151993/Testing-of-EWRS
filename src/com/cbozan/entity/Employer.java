@@ -167,21 +167,19 @@ public final class Employer implements Serializable, Cloneable{
 
 	@Override
 	public int hashCode() {
-		return Objects.hash(date, description, fname, id, lname, tel);
+		// Equality is based on immutable identifier semantics for entities
+		return Objects.hash(id);
 	}
 
 	@Override
 	public boolean equals(Object obj) {
 		if (this == obj)
 			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
+		if (obj == null || getClass() != obj.getClass())
 			return false;
 		Employer other = (Employer) obj;
-		return Objects.equals(date, other.date) && Objects.equals(description, other.description)
-				&& Objects.equals(fname, other.fname) && id == other.id && Objects.equals(lname, other.lname)
-				&& Objects.equals(tel, other.tel);
+		// Treat entities as equal when they share the same ID
+		return id == other.id;
 	}
 	
 	@Override
